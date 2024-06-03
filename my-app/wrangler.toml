@@ -1,8 +1,9 @@
 name = "my-app"
 compatibility_date = "2023-12-01"
 
-# [vars]
-# MY_VAR = "my-variable"
+[vars]
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiYWRkMmFhNjUtODczNC00MDk5LTkwZjMtMzRhNDBlOTgwZTk3IiwidGVuYW50X2lkIjoiMDZmZmNjMDcyZTNhNjE3MDhlNzQ4MmUyNjg5ZjdmNzY4ZjFjZmE2OTFmYjhmMzVmMmRkNTliNTM5ODE5Yzc0MyIsImludGVybmFsX3NlY3JldCI6IjJiN2UxZmU2LTJkNWMtNDc2Yi1iYjBjLTlhMDMyMjAzNTAwMSJ9.9RODGOhubjtshjdFaIxQENL4hi-aBo6HpdiDORgMNSo"
+
 
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"

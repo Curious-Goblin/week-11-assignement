@@ -3,13 +3,18 @@ import { userAuthentication } from "../middleware/user";
 import { PrismaClient } from "@prisma/client";
 import { Context } from "hono";
 import { postSchema } from "../zod/post";
+import { withAccelerate } from "@prisma/extension-accelerate";
+import { env } from "hono/adapter";
 
 export const postRouter = new Hono();
-const prisma = new PrismaClient();
 
 postRouter.get('/', userAuthentication, async (c: Context) => {
     try {
         const userId = c.get('userId')
+        const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c)
+        const prisma = new PrismaClient({
+            datasourceUrl: DATABASE_URL,
+        }).$extends(withAccelerate())
         const res = await prisma.posts.findMany({
             where: {
                 userId: userId
@@ -33,6 +38,10 @@ postRouter.post('/', userAuthentication, async (c: Context) => {
             console.log("your input format for your post is wrong")
         }
         else {
+            const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c)
+        const prisma = new PrismaClient({
+            datasourceUrl: DATABASE_URL,
+        }).$extends(withAccelerate())
             const newpost = await prisma.posts.create({
                 data: {
                     title: body.title,
@@ -52,6 +61,10 @@ postRouter.post('/', userAuthentication, async (c: Context) => {
 postRouter.get('/:id', userAuthentication, async (c: Context) => {
     try {
         const postId = parseInt(c.req.param('id'))
+        const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c)
+        const prisma = new PrismaClient({
+            datasourceUrl: DATABASE_URL,
+        }).$extends(withAccelerate())
         const res = await prisma.posts.findUnique({
             where: { id: postId },
             include: { tags: true }
@@ -68,6 +81,10 @@ postRouter.post('/:id', userAuthentication, async (c: Context) => {
     try {
         const postId = parseInt(c.req.param('id'))
         const body = await c.req.json();
+        const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c)
+        const prisma = new PrismaClient({
+            datasourceUrl: DATABASE_URL,
+        }).$extends(withAccelerate())
         const updatedPost = await prisma.posts.update({
             where: {
                 id: postId
@@ -88,6 +105,10 @@ postRouter.post('/:id', userAuthentication, async (c: Context) => {
 postRouter.delete('/:id', userAuthentication, async (c: Context) => {
     try {
         const postId = parseInt(c.req.param('id'))
+        const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c)
+        const prisma = new PrismaClient({
+            datasourceUrl: DATABASE_URL,
+        }).$extends(withAccelerate())
         const res = await prisma.posts.delete({
             where: {
                 id: postId
